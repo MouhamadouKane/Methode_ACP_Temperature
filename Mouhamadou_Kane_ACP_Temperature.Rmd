@@ -1,0 +1,329 @@
+---
+title: " ACP sur des donnees de temperature"
+author: "MOUHAMADOU KANE"
+date: "2022-11-16"
+output: html_document
+---
+
+
+On va charger nos donnees pour ensuite repondre aux questions 
+```{r echo=FALSE }
+temp=read.table("~/Universite de LILLE/Semestre 1/M1 - MIASHS Parcourt MQME/Analyse de donnees/Sophie Dabo/temperature.txt",header=TRUE,dec='.')
+temp
+```
+
+
+```{r echo=FALSE, warning=FALSE}
+
+#install.packages("kableExtra")           
+library("kableExtra")
+```
+
+
+
+## 1- Analyse Descriptives des variables :
+
+```{r echo=FALSE}
+#résumé descriptif de chaque variable, utiliser le package kableextra pour une affichage plus joli
+kable(summary(temp), digits= 1, booktabs = TRUE)%>%
+  kable_styling(font_size = 20)
+
+```
+
+
+Dans cette partie on se focalise uniquement sur les 12 mois :
+
+**- Janvier :** La temperature minimale est de **0.40** et **7.5** est la temperature maximale ; On voit aussi **50%** des villes on une temperature  **< ou egale 4.7** et **50%** des villes on une temperature   **> ou egale 4.7**.  ET **25%** des villes on une temperature  **< ou egale 2.4** par contre **75%** des villes on une temperature **< ou egale a 5.55**.
+
+
+**- Fevrier :** La temperature  minimale est de **1.500** et **8.500** est la temperature maximale ; On voit aussi **50%** des villes on une temperature   **< 5.300** et **50%** des villes on une temperature   **> ou egale a 5.300**.  ET **25%** des villes on une temperature  **< 3.350** par contre **75%** des villes on une temperature  **> ou egale a 6.200**.
+
+**- Mars :** La temperature  minimale est de **5.600** et **10.800** est la temperature maximale ; On voit aussi **50%** des villes on une temperature  **< 7.800** et **50%** des villes on une temperature   **> 7.800**.  ET **25%** des villes on une temperature  **< 7.550** par contre **75%** des villes on une temperature  **< ou egale a 9.550**.
+
+**- Avril :** La temperature  minimale est de **8.90** et **10.800** est la temperature maximale ; On voit aussi **50%** des villes on une temperature  **< 10.70** et **50%** des villes on une temperature   **> 10.70**.  ET **25%** des villes on une temperature  **< 10.00** par contre **75%** des villes on une temperature  **< ou egale a 12.20**.
+
+**- Mai :** La temperature  minimale est de **11.60** et **16.80** est la temperature maximale ; On voit aussi **50%** des villes on  une temperature  **< 14.30** et **50%** des villes on une temperature   **> ou egale a 14.30**.  ET **25%** des villes on une   temperature  **< 13.70** par contre **75%** des villes on une temperature  **< ou egale a 15.35**.
+
+**- Juin :** La temperature  minimale est de **14.40** et **20.80** est la temperature maximale ; On voit aussi **50%** des villes on une temperature   **< 17.50** et **50%** des villes on une temperature   **> 17.50**.  ET **25%** des villes on une temperature  **< 17.15** par contre **75%** des villes on une temperature  **=19.00**.
+
+**- Juillet :** La temperature  minimale est de **15.60** et **23.30** est la temperature maximale ; On voit aussi **50%** des villes on                 une temperature moyenne < **19.40** et **50%** des villes on une temperature moyenne > **19.40**.  ET **25%** des villes on une temperature  **< 18.90** par contre **75%** des villes on une temperature moyenne **< ou egale a 20.90**.
+
+
+**- Aout :** La temperature moyenne minimale est de **16.00** et **22.80** est la temperature maximale ; On voit aussi **50%** des villes on                 une temperature moyenne < **19.10** et **50%** des villes on une temperature moyenne > **19.10**.  ET **25%** des villes on une                     temperature moyenne **< 18.45** par contre **75%** des villes on une temperature moyenne **< ou egale a 20.95**.
+
+**- Septembre :** La temperature moyenne minimale est de **14.70** et **20.30** est la temperature maximale ; On voit aussi **50%** des villes                    on une temperature moyenne < **16.40** et **50%** des villes on une temperature moyenne > **16.40**.  ET **25%** des villes on une  temperature moyenne **< 15.85** par contre **75%** des villes on une temperature moyenne **< ou egale a 18.45**.
+
+**- Otobre :** La temperature moyenne minimale est de **9.50** et **16.00** est la temperature maximale ; On voit aussi **50%** des villes                    on une temperature moyenne  **< 11.60** et **50%** des villes on une temperature moyenne > **11.60**.  ET **25%** des villes on une  temperature moyenne **< 11.30** par contre **75%** des villes on une temperature moyenne **< ou egale a 13.55**.
+
+**- Novembre :** La temperature moyenne minimale est de **4.900** et **11.500** est la temperature maximale ; On voit aussi **50%** des villes                    on une temperature moyenne < **7.800** et **50%** des villes on une temperature moyenne > **7.800**.  ET **25%** des villes on                     une  temperature moyenne **< 6.600** par contre **75%** des villes on une temperature moyenne **< ou egale a 9.050**.
+
+**- Decembre :** La temperature moyenne minimale est de **1.300** et **8.200** est la temperature maximale ; On voit aussi **50%** des villes                    on une temperature moyenne < **5.400** et **50%** des villes on une temperature moyenne > **5.400**.  ET **25%** des villes on                  une  temperature moyenne **< 3.450** par contre **75%** des villes on une temperature moyenne **> ou egale a 6.350**.
+
+Ensuite interpretons la matrice de **correllation** de nos 12 mois. Pour ce faire utilisons la fonction **corrplot** de la librairie *corrplot* permet de représenter graphiquement une matrice de corrélation.
+
+```{r echo=FALSE, message=FALSE}
+X=temp[,1:12]
+
+matcor=cor(X)
+kable(matcor, digits= 7, booktabs = TRUE)%>%
+  kable_styling(font_size = 20)
+
+library(corrplot)
+corrplot(matcor, type="upper", tl.col="black", tl.srt=45)
+```
+
+**-Janvier** est **fortement positement** correlle avec **Fevrier, Mars, Octobre, Novembre et Decembre** mais aussi on note une correllation **faible** avec les mois **Avril et Septembre**.
+
+**-Fevrier** est **fortement positement** correlle avec **Mars,Septembre, Octobre, Novembre et Decembre** mais aussi on note une correllation **faible** avec les mois **Mai, Juin et Aout**.
+
+**- Mars et Avril** sont **fortements positements** correlle avec  **tous les mois**.
+
+**- Mai** est **fortement positement** correlle avec **Juin, Juillet, Aout ,Septembre et Octobre ** mais aussi on note une correllation **faible** avec les mois **Avril et Septembre**.
+
+**- Juin** est **fortement positement** correlle avec **Juin, Juillet, Aout,Septembre et Octobre ** mais aussi on note une correllation **faible** avec le mois **Novembre**.
+
+**- Juillet** est **fortement positement** correlle avec **Aout,Septembre et Octobre ** mais aussi on note une correllation **faible** avec le mois **Novembre**.
+
+**- Aout** est **fortement positement** correlle avec **Septembre et Octobre ** mais aussi on note une correllation **faible** avec le mois **Novembre**.
+
+**- Septembre** est **fortement positement** correlle avec **Octobre, Novembre et Decembre ** .
+
+**- Octobre** est **fortement positement** correlle avec **, Novembre et Decembre ** .
+
+**- Nvembre** est **fortement positement** correlle avec **Decembre ** .
+
+Au vue des correllations qu'on a vue avec certaines variables, cela peut nous permettre de faire un **ACP** pour reduire les dimensions.
+
+Faisons aussi le **Boxplot** pour voir la dispersion de non 12 variables
+
+```{r echo=FALSE}
+boxplot(X)
+```
+
+On voit que toutes nos variables sont presque homogenes donc on peut faire un **ACP non normee ou un ACP normee**.
+On choisira dans la suite de faire un  **un ACP normee**.
+
+# 2. Quelle est l’inertie associée au premier axe factoriel? Au second axe? Quelle est l’inertie totale? Quel est le pourcentage d’inertie                        associé au premier plan factoriel?
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library("FactoMineR")
+library("factoextra")
+
+X.pca= PCA(X, graph = FALSE)
+X.pca
+```
+Linertie associer au premier axe est de **9.58178**
+```{r echo=FALSE}
+X.pca$eig[1]
+```
+
+Linertie associer au deuxieme axe est de **2.276418**
+```{r echo=FALSE}
+X.pca$eig[2]
+```
+L’inertie totale est : **12**
+
+```{r echo=FALSE}
+Inerrtie_total=X.pca$eig[1]+X.pca$eig[2]+X.pca$eig[3]+X.pca$eig[4]+X.pca$eig[5]+X.pca$eig[6]+X.pca$eig[7]+X.pca$eig[8]+X.pca$eig[9]+X.pca$eig[10]+X.pca$eig[11]+X.pca$eig[12]
+
+Inerrtie_total
+```
+Le pourcentage d'inertie au premier plan factoriel est de :**98.81832**.
+
+```{r echo=FALSE}
+pourcentage_inertie_premier_plan= ((X.pca$eig[1]+X.pca$eig[2])/Inerrtie_total)*100
+pourcentage_inertie_premier_plan
+```
+# 3. Représenter à l’aide de diagrammes en bâtons l’inertie des axes ("éboulis des valeurspropres") et le pourcentage d’inertie cumulé.
+
+Faisons la representation de diagrammes en bâtons l’inertie des axes :
+
+```{r echo=FALSE}
+fviz_eig(X.pca, addlabels = TRUE, ylim = c(0, 90))
+```
+
+
+# 4. Produire les corrélations des variables avec l’axe 1 et les trier de façon décroissante.Même chose pour l’axe 2. Quelle est la variable la plus corrélée à l’axe                  1 ? à l’axe 2?
+**- Pour l'axe 1 :**
+
+On affiche d'abord les correlation  :
+```{r echo=FALSE}
+corr_1=X.pca$var$cor[,1]
+corr_1
+```
+
+On va ensuite afficher le triage de façon décroissante
+
+```{r echo=FALSE}
+rev(sort(corr_1))
+```
+
+Donc on voit **Octobre** est la plus correlle a l'axe 1
+
+**- Pour l'axe 2 :**
+
+On affiche d'abord les correlation  :
+```{r echo=FALSE}
+corr_2=X.pca$var$cor[,2]
+corr_2
+```
+
+On va ensuite afficher le triage de façon décroissante
+
+```{r echo=FALSE}
+rev(sort(corr_2))
+```
+
+Donc on voit **Janvier** est la plus correlle a l'axe 2
+
+# 5. Retrouver par le calcul la contribution de la variable la plus corrélée avec l’axe 1.
+
+Pour repondre a la question on va d'abord afficher la contribution avec la fonction **PCA** et ensuite comparer au resultat par calcul
+```{r echo=FALSE}
+X.pca$var$contrib[, 1]
+```
+
+On voit que la contribution de la variable **Octobre**  est de **10.026461**.
+
+Par calcule on cherche d'abord le maximum de cordonne  a l'axe 1 pour l'eleve au carree est ensuite le divise a la valeur propre de l'axe 1
+
+```{r echo=FALSE}
+ctr_max=((max(X.pca$var$coord[,1]))**2)/X.pca$eig[1]*100
+ctr_max
+```
+On a retrouver la valeur par calcule.
+
+# 6. Quel est l’individu dont la qualité de représentation sur le plan (1, 2) est la plus élevée? la moins élevé?
+
+Pour ce faire on va utiliser la **fviz_cos2**  pour afficher par ordre decroissant 
+```{r echo=FALSE}
+X.pca$ind$cos2[,1:2]
+
+```
+
+```{r echo=FALSE}
+
+fviz_cos2(X.pca, choice = "ind", axes = 1:2 , top = 15)
+
+```
+
+On voit que sur le plan (1,2) **Brest** est le mieux represente parcontre  **Paris** est le moins represente.
+
+# 7. Quel est l’individu ayant le plus contribué à la formation de l’axe 1? le moins contribué? Donner les contributions significatives des individus à l’axe 1.
+
+
+```{r echo=FALSE}
+rev(sort(X.pca$ind$contrib[,1]))
+```
+On vois **Nice** est l'indiviuds qui a le plus contribue a la formation de l'axe 1.
+
+Parcontre **Nantes** est l'indiviuds qui a le moin contribue a la formation de l'axe 1.
+
+Pour les contributions significatives des individus à l’axe 1 on va utiliser la **fviz_contrib** :
+
+```{r echo=FALSE}
+# Contributions des variables à PC1
+fviz_contrib(X.pca, choice = "ind", axes = 1, top = 15)
+```
+
+On voit les individus Nice,Marseille,Lille,Montpellier,Strasbourg et Bordeaux sont les plus significatifs car ils sont au dessus de la ligne **rouge**. 
+
+# 8. Quel est l’individu ayant le plus contribué à la formation de l’axe 2? le moins contribué. Donner les contributions significatives des individus à l’axe 2.
+
+```{r echo=FALSE}
+rev(sort(X.pca$ind$contrib[,2]))
+```
+On vois **Brest** est l'indiviuds qui a le plus contribue a la formation de l'axe 2.
+
+Parcontre **Bordeaux** est l'indiviuds qui a le moin contribue a la formation de l'axe 2.
+
+Pour les contributions significatives des individus à l’axe 2 on va utiliser la **fviz_contrib** :
+
+```{r echo=FALSE}
+# Contributions des variables à PC1
+fviz_contrib(X.pca, choice = "ind", axes = 2, top = 15)
+```
+
+On voit les individus Brest,Strasbourg,Lyon,Grenoble et Rennes sont les plus significatifs car ils sont au-dessus de la ligne **rouge**.
+
+
+# 9. Trier les individus du plus éloigné au plus proche du centre de gravité du nuage.
+
+
+Pour ce faire on va utiliser la methode de calcule et ensuite utiliser la fonction de **dist** pour comparer les resultats.
+
+**- Methodes calcule directe :**
+
+
+```{r echo=FALSE}
+distance_centre_gravite =sqrt(X.pca$ind$coord[,1]^2 +X.pca$ind$coord[,2]^2)
+sort(distance_centre_gravite , decreasing = TRUE)
+```
+
+**- Methodes dist :**
+
+```{r echo=FALSE}
+distance_centre_gravite_dist=X.pca$ind$dist
+sort(distance_centre_gravite_dist, decreasing = TRUE)
+```
+
+On remarque qu'on a les memes resultats et **Nice** est le plus **eloigner** du centre de gravite  parcontre **Nantes**
+
+est le plus **proche** du centre de gravite.
+
+
+
+
+
+# 10. Retrouver la valeur de la distance au centre de gravité de Strasbourg à partir de sa qualité de représentation et sa coordonnée le long d’un axe.
+
+Retrouvons la distance au centre de gravite de Strasbourg par rapport  
+
+$distStragbourgGravite$=$C_{strasbourg,k}^2 / Cos^2(strasbourg)$ = 
+
+
+```{r echo=FALSE}
+dist_Stragbourg_Gravite=sqrt((X.pca$ind$coord[13,1]^2)/(X.pca$ind$cos2[13,1]))
+dist_Stragbourg_Gravite
+
+```
+Et retrouve ainsi la valeur de la distance de strasbourg 
+
+
+#11. Interpréter les deux premiers axes factoriels.
+
+Pour faire une bonne interpretation on va d'abord lister les variables qui sont bien reprentes  et individus qui ont une contribution tres significatives.
+
+**Cas des variables : **  Etudions les variables les plus representatif suivant le plan factoriel
+
+```{r echo=FALSE}
+X.pca=PCA(X)
+X.pca$var$cos2[, 1:2]
+```
+
+-Suivant l'axe 1: Fevrier, Mars,Avril, Mai ,Juin, Juillet, Aout, Septembre, Octobre et Novembre sont **fortement positivement** correlles.
+
+_Suivant l'axe 2 les variables ne sont pas correlles.
+
+Donc l'interpretation se portera uniquementt sur l'axe 1.
+
+**- Cas des individus ** A la question precedente on avais vue que  suivant **l'axe 1**
+**Nice,Marseille,Lille,Montpellier,Strasbourg et Bordeaux** avaient des contributions fortement superieure a la moyenne donc on va les retenire pour notre interpretation.
+
+L'axe 1 oppose donc **Lille et Strasbourg** aux villes **Nice,Marseille,Montpellier et Bordeaux**
+
+
+**Interpretation globale :**
+
+En **Fevrier, Mars,Avril, Mai ,Juin, Juillet, Aout, Septembre, Octobre et Novembre** il fait beaucoup plus froid a **Lille et Strasbourg** parcontre dans les villes comme **Nice,Marseille,Montpellier et Bordeaux** fait beaucoup plus chaud.
+
+
+
+
+
+
+
+
+
+
+
